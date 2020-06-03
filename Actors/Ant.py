@@ -7,6 +7,7 @@ from Actors.Footprint import Footprint
 class Ant():
     """description of class"""   
     
+    __id = 0
 
     def __init__( self, size ):
         """description of class"""
@@ -14,11 +15,11 @@ class Ant():
 
         self.__antx = 0
         self.__anty = 0        
-        self.__nestx = 0
-        self.__nesty = 0
+
+        self.__food = 0
+
         self.__cols = size[0]
         self.__rows = size[1]
-        self.__food = 0
     
 
     
@@ -27,11 +28,6 @@ class Ant():
         self.__cols = col
         self.__rows = row
 
-
-    def set_nest( self, nest ):
-        """description of class"""
-        self.__nestx = nest[0]
-        self.__nesty = nest[1]
 
 
     def set_position( self, posx, posy ):
@@ -77,18 +73,8 @@ class Ant():
         pygame.draw.rect( screen, color, ( self.__antx * w, self.__anty * h, w, h ) )
         
 
-
-    def plot_nest( self, screen ):
-
-        color  = 64, 242, 64
-    
-        w, h = int( screen.get_width()/self.__cols), int( screen.get_height()/self.__rows )
         
-        pygame.draw.rect( screen,  color, ( self.__nestx * w, self.__nesty * h, w, h ) )
-
-
-        
-    def step(self, enabled, terrain ):
+    def step( self, enabled, terrain ):
 
         possible = False
         

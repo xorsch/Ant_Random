@@ -22,6 +22,9 @@
   </PropertyGroup>
   <ItemGroup>
     <Compile Include="Actors\Ant.py" />
+    <Compile Include="Actors\Colony.py">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="Actors\Food.py" />
     <Compile Include="Actors\Footprint.py" />
     <Compile Include="Actors\Terrain.py" />

@@ -1,8 +1,8 @@
 import pygame
 
 from Actors.Terrain import Terrain
-from Actors.Ant import Ant
 from Actors.Food import Food 
+from Actors.Colony import Colony
 
                         
         
@@ -35,8 +35,7 @@ frame_rate = 15
 if __name__ == "__main__":
 
     terrain = Terrain( (cols, rows) )
-    ant  = Ant( ( cols, rows ) )    
-    ant2 = Ant( ( cols, rows ) ) 
+    colony  = Colony( (cols, rows) )
     food = Food( ( cols, rows ) )
 
     pygame.init()
@@ -45,10 +44,7 @@ if __name__ == "__main__":
 
  
     terrain.create_terrain( (2,2), 5, 343 )
-    ant.set_position(  int(cols/4), int(rows/4) )
-    ant.set_nest( ant.get_position() )
-    ant2.set_position(  int(cols/4)-3, int(rows/4)-3 )
-    ant2.set_nest( ant.get_position() )
+    colony.set_colony( (8,6), 4 )
     food.set_position( 30, 22 )    
 
 
@@ -84,24 +80,24 @@ if __name__ == "__main__":
 
         ## Move Ant and Check if it founded food, also remeber his footprints
 
-        ant.step( not game_pause, terrain )
-        if( is_ant_found_food( ant.get_position(), food.get_position() ) ):
-            ant.get_food();
+        colony.step( not game_pause, terrain )
 
-        ant2.step( not game_pause, terrain )
-        if( is_ant_found_food( ant2.get_position(), food.get_position() ) ):
-            ant2.get_food();            
+        
+        #if( is_ant_found_food( ant.get_position(), food.get_position() ) ):
+        #    ant.get_food();
+        
+        #if( is_ant_found_food( ant2.get_position(), food.get_position() ) ):
+        #    ant2.get_food();            
         
         ## Show game
+
+        screen.fill( (0,0,0) )
 
         terrain.plot_terrain( show_board, screen )
         terrain.plot_grid( show_grid, screen )
         food.plot_food( screen )       
-        
-        ant.plot_ant( show_footprint, screen )
-        ant2.plot_ant( show_footprint, screen )
-        ant.plot_nest( screen )
-        ant2.plot_nest( screen )
+        colony.plot_colony( show_footprint, screen )
+
         
         pygame.display.update()
 
