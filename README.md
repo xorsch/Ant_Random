@@ -13,7 +13,7 @@ sabe cómo.
 Por ahora como he dicho, es solo un ensayo y error que no pretende ir a ningún sitio salvo 
 ir tanteando el problema e ir buscando información variada
 
-FUNCIONES ESPECIALES CON EL TECLADO  p
+FUNCIONES ESPECIALES CON EL TECLADO
 
 pausa: barra espaciadora (por ahora se pierden las feromonas)
 mostrar feromonas: p
