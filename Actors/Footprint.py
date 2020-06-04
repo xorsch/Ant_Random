@@ -10,7 +10,8 @@ class Footprint():
 
    
     def __init__( self, size ):
-        """description of class"""  
+        """description of class""" 
+        
         self.__footprint = numpy.zeros( ( size[0], size[1] ) )
 
 
@@ -24,16 +25,14 @@ class Footprint():
         
     def paint_box( self, position ):
         """description of class""" 
-
-        
-        self.__footprint[ position[0] ][ position[1] ] += 64
+  
+        self.__footprint[ position[0] ][ position[1] ] += 32
 
 
         
     def plot_board( self, enabled, screen, with_food ):
         """description of class""" 
 
-        
 
         if ( not enabled ):
             return

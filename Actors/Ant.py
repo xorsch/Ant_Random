@@ -11,6 +11,7 @@ class Ant():
 
     def __init__( self, size ):
         """description of class"""
+
         self.footprint = Footprint( size )
 
         self.__antx = 0
@@ -38,20 +39,29 @@ class Ant():
 
 
     def get_food( self ):
-        
-        if( self.__food < 10):
+        """description of class"""
+
+        if( self.__food < 2 ):
             self.__food += 1
 
+    def free_food(self):
+        """description of class"""
 
+        self.__food = 0
+
+    
     def is_get_food(self):
-        if (self.__food==1):
+        """description of class"""
+
+        if (self.__food>0):
             return True
 
         return False
     
 
     def get_position( self ):
-        
+        """Return ant position as vector"""
+
         return self.__antx, self.__anty
     
 
@@ -76,11 +86,13 @@ class Ant():
         
     def step( self, enabled, terrain ):
 
-        possible = False
+        
         
         if (not enabled):
             return
-        
+
+        possible = False
+
         move = ( (0, -1), (1, 0), (0, 1), (-1, 0),
                  (1, -1), (1, 1), (-1, 1), (-1, -1))
         
@@ -89,14 +101,7 @@ class Ant():
             direction = numpy.random.randint(0,8)
         
             newx = self.__antx + move[direction][0] #* numpy.random.randint(1,4)
-            newy = self.__anty + move[direction][1] #* numpy.random.randint(1,4)
-            
-            if( self.__food == 1 and 
-                self.__antx == self.__nestx and \
-                self.__anty == self.__nesty ):
-
-                self.__food = 0
-                print("Food in nest")
+            newy = self.__anty + move[direction][1] #* numpy.random.randint(1,4)          
 
             if( terrain.get_terrain( newx, newy ) > 0 ):
                 possible = not possible  
