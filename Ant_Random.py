@@ -5,10 +5,12 @@ from Actors.Terrain import Terrain
 from Actors.Food import Food 
 from Actors.Colony import Colony
 
+
 # Return true if ant and food at an the same position        
 def is_ant_found_food( ant, food ):
 
-    if( ant[0] == food[0] and ant[1]==food[1]):
+    if( ant[0] == food[0] \
+        and ant[1]==food[1]):
 
         return True
 
@@ -17,8 +19,8 @@ def is_ant_found_food( ant, food ):
 
 # Main
 
-width, height = 120*7, 72*7
-cols, rows = 120, 72
+width, height = 800, 600
+cols, rows = 40, 30
 
 
 show_grid = False
@@ -26,6 +28,8 @@ show_board = True
 show_footprint = True
 game_pause = False
 done = False
+fullscreen = False
+modify = False
 
 frame_rate = 25
 
@@ -42,9 +46,10 @@ if __name__ == "__main__":
     clock  = pygame.time.Clock()
 
  
-    terrain.create_terrain( (2,2), 5, 3123 ) # 343 )
-    colony.set_colony( (8,6), 4 )
-    food.set_position( 24, 20 )    
+    terrain.create_terrain( (2,2), 5, 1242 ) # 343 )
+    colony.set_colony( (8,6), 1 )
+    food.set_position( 24, 20 )
+
 
     while not done:
                 
@@ -57,15 +62,24 @@ if __name__ == "__main__":
 
             mouseClick = pygame.mouse.get_pressed()
         
-            if sum(mouseClick)>0 :
+            if pygame.mouse.get_pressed()[2] and  modify == True :
                 posX, posY = pygame.mouse.get_pos()
                 dimCW = int(height/rows)
                 dimCH = int(width/cols)
                 celX, celY = int ( numpy.floor( posX / dimCW ) ), int( numpy.floor( posY / dimCH ) )
-                print( celX, celY )
+                
                 food.set_position( celX, celY )
                 food.add_food()
+                modify = False
 
+            if pygame.mouse.get_pressed()[0] and  modify == True :
+
+                posX, posY = pygame.mouse.get_pos()
+                dimCW, dimCH = int( height/rows ), int( width/cols )
+                celX, celY = int( numpy.floor( posX / dimCW ) ), int( numpy.floor( posY / dimCH ) )
+                
+                colony.set_nest( (celX, celY) )
+                modify = False
 
 
             keys = pygame.key.get_pressed()
@@ -93,12 +107,15 @@ if __name__ == "__main__":
             if event.type == pygame.KEYDOWN and event.key == pygame.K_z :
                 colony.delete_ant()
 
+            if event.type == pygame.KEYDOWN and event.key == pygame.K_LCTRL:
+               modify = True
+
 
         ## Move Ant and Check if it founded food, also remeber his footprints
 
         colony.step( not game_pause, terrain )
 
-        ## Check if any ant has founded food
+        ## Check if any ant has found food
         for n in range ( colony.count_ants() ):
 
             if( is_ant_found_food( colony.get_ant(n).get_position(), food.get_position() ) ):
@@ -111,7 +128,7 @@ if __name__ == "__main__":
         terrain.plot_terrain( show_board, screen )
         terrain.plot_grid( show_grid, screen )
         food.plot_food( screen )       
-        colony.plot_colony( show_footprint, screen )
+        colony.plot_colony( show_footprint, game_pause, screen )
 
         
         pygame.display.update()

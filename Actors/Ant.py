@@ -25,14 +25,17 @@ class Ant():
 
     
     def set_ant( self, col, row ):
-        """description of class"""
+        """
+        set ant col, row """
+
         self.__cols = col
         self.__rows = row
 
 
 
     def set_position( self, posx, posy ):
-        """description of class"""
+        """
+        Set ant position"""
 
         self.__antx = posx
         self.__anty = posy
@@ -65,8 +68,9 @@ class Ant():
         return self.__antx, self.__anty
     
 
-    def plot_ant( self, show_footprint, screen ):
-        
+    def plot_ant( self, show_footprint, pause, screen ):
+        """Return ant position as vector"""
+
         red   =  64, 64, 64
         blue  =  16, 16, 242
         
@@ -78,14 +82,45 @@ class Ant():
             color = blue                    
         
         if ( show_footprint == True ):
-            self.footprint.plot_board( True, screen, self.__food )
+            self.footprint.plot_board( True, pause, screen, self.__food )
 
         pygame.draw.rect( screen, color, ( self.__antx * w, self.__anty * h, w, h ) )
         
 
+    def __calculate_new_direction( self, terrain ):
+        direction = numpy.random.randint(0,8)    
         
-    def step( self, enabled, terrain ):
+        sum_left   = self.footprint.get_footprint( self.__antx-1, self.__anty  )+self.footprint.get_footprint( self.__antx-2, self.__anty  )
+        sum_right  = self.footprint.get_footprint( self.__antx+1, self.__anty  )+self.footprint.get_footprint( self.__antx+2, self.__anty  )
+        sum_top    = self.footprint.get_footprint( self.__antx, self.__anty-1  )+self.footprint.get_footprint( self.__antx, self.__anty-2  )        
+        sum_bottom = self.footprint.get_footprint( self.__antx, self.__anty+1  )+self.footprint.get_footprint( self.__antx, self.__anty+2  )        
 
+        sum_top_left  = self.footprint.get_footprint( self.__antx-1, self.__anty-1)+self.footprint.get_footprint( self.__antx-2, self.__anty-2  )
+        sum_top_right = self.footprint.get_footprint( self.__antx+1, self.__anty-1)+self.footprint.get_footprint( self.__antx+2, self.__anty-2  )
+        sum_bot_left  = self.footprint.get_footprint( self.__antx-1, self.__anty+1)+self.footprint.get_footprint( self.__antx-2, self.__anty+2  )        
+        sum_bot_right = self.footprint.get_footprint( self.__antx+1, self.__anty+1)+self.footprint.get_footprint( self.__antx+2, self.__anty+2  )  
+
+        # move = ( (-1, 0), ( 0,-1 ), ( 1, 0), ( 0, 1),
+        #          (-1,-1), ( 1,-1 ), (-1, 1), ( 1, 1) )
+        
+        self.__cost = []
+        self.__cost.append( sum_left )    
+        self.__cost.append( sum_top )
+        self.__cost.append( sum_right )  
+        self.__cost.append( sum_bottom )        
+        self.__cost.append( sum_top_left )    
+        self.__cost.append( sum_top_right )
+        self.__cost.append( sum_bot_left )  
+        self.__cost.append( sum_bot_right )   
+        
+        direction = numpy.argmin( self.__cost )
+
+        return direction
+
+
+
+    def step( self, enabled, terrain ):
+        """Fa avançar el conjunt de la colonia un pas en la seva evolució"""
         
         
         if (not enabled):
@@ -93,19 +128,30 @@ class Ant():
 
         possible = False
 
-        move = ( (0, -1), (1, 0), (0, 1), (-1, 0),
-                 (1, -1), (1, 1), (-1, 1), (-1, -1))
+        move = ( (-1, 0), ( 0,-1 ), ( 1, 0), ( 0, 1),
+                 (-1,-1), ( 1,-1 ), (-1, 1), ( 1, 1) )
         
+        dir_random = True
         while( not possible ):
-        
-            direction = numpy.random.randint(0,8)
-        
+            
+            direction = numpy.random.randint( 0, 4 )
+
+            if( self.__antx > 2 and self.__antx < ( self.__rows - 3) and \
+                self.__antx > 2 and self.__antx < ( self.__rows - 1) ):
+                direction = self.__calculate_new_direction( terrain )
+                dir_random = False
+  
             newx = self.__antx + move[direction][0] #* numpy.random.randint(1,4)
             newy = self.__anty + move[direction][1] #* numpy.random.randint(1,4)          
 
             if( terrain.get_terrain( newx, newy ) > 0 ):
                 possible = not possible  
-                
+        
+        if( terrain.get_terrain( newx, newy ) < 1 ):
+            return 
+        
+        print("Direccion random", dir_random )
+
 
         if( newx > -1 and newx < self.__cols and \
             newy > -1 and newy < self.__rows ):
@@ -113,6 +159,6 @@ class Ant():
             self.__antx = newx
             self.__anty = newy
 
-            self.footprint.paint_box( (self.__antx, self.__anty) )
+            self.footprint.set_footprint( (self.__antx, self.__anty) )
 
 #EOF

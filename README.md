@@ -13,7 +13,7 @@ sabe cómo.
 Por ahora como he dicho, es solo un ensayo y error que no pretende ir a ningún sitio salvo 
 ir tanteando el problema e ir buscando información variada
 
-FUNCIONES ESPECIALES CON EL TECLADO
+FUNCIONES ESPECIALES CON EL RATON Y TECLADO
 
 pausa: barra espaciadora (por ahora se pierden las feromonas)
 mostrar feromonas: p
@@ -21,14 +21,13 @@ mostrar grid: g
 salir: q, esc
 añadir hormiga: a
 eliminar hormiga: z
-
-FUNCIONES ESPECIALES CON EL RATON
-
-Un click sobre el terreno cambia la ubicación de la comida y añade 5 unidades
+mover hormiguero: control izquierdo y luego señalar un lugar de mapa y click izquierdo
+mover comida: control izquierdo y luego señalar un lugar de mapa y click derecho
 
 BUGS
 
 Algunas veces peta al poner algunos valores en create terrain.
+Algunas veces peta cuando la hormiga se encalla.
 
 OBJETIVOS PARCIALES 
 

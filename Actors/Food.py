@@ -5,15 +5,16 @@ import numpy
 class Food():
 
     """description of class"""
-    __food_color   = 64,  242, 242, 125
     color = (204,102,0,255)
+    __food_color   = 64,  242, 242, 125
+    
     __foodx, __foody = 0, 0        
     __cols,  __rows  = 0, 0
     __quantity = 0
 
 
     def __init__( self, size ):
-        """description of class"""
+        """description of function"""
         self.__quantity = 5
         self.__cols = size[0]
         self.__rows = size[1]
@@ -21,7 +22,7 @@ class Food():
 
 
     def set_position( self, posx, posy ):
-        """description of class"""
+        """set food on posx, posy coordenates """
 
         self.__foodx = posx
         self.__foody = posy
@@ -49,6 +50,8 @@ class Food():
 
 
     def count_food(self):
+        '''return the quatity of food'''
+
         return self.__quantity
 
 

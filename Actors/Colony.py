@@ -16,6 +16,13 @@ class Colony():
         self.__rows = size[1]
 
 
+    def set_nest( self, position ):
+        """Set nest position on the array"""
+
+        self.__nestx = position[0]
+        self.__nesty = position[1]
+
+
     def set_colony( self, site, n_ants ):
         """description of class"""
 
@@ -67,30 +74,35 @@ class Colony():
         """description of class"""
 
         for n in range ( len( self.__ants )):
+
             self.__ants[n].step( enabled, terrain )
             position = self.__ants[n].get_position()
+
             if( position[0] == self.__nestx and \
                 position[1] == self.__nesty ):
+
                 if( self.__ants[n].is_get_food() ):
                     self.__ants[n].free_food()
+
 
 
     def __plot_nest( self, screen ):
         """Plot nest colony in screen"""
 
-        color  = 64, 242, 64
+        color  = 128, 242, 64
     
-        w, h = int( screen.get_width()/self.__cols), int( screen.get_height()/self.__rows )
-        
+        w = int( screen.get_width()/self.__cols )
+        h = int( screen.get_height()/self.__rows )
+
         pygame.draw.rect( screen,  color, ( self.__nestx * w, self.__nesty * h, w, h ) )
 
 
-    def plot_colony( self, show_footprint, screen ):
+    def plot_colony( self, show_footprint, pause, screen ):
         """description of class"""
 
         self.__plot_nest( screen )
 
         for n in range ( len( self.__ants )):
-            self.__ants[n].plot_ant( show_footprint, screen )
+            self.__ants[n].plot_ant( show_footprint, pause, screen )
 
 #EOF

@@ -10,27 +10,32 @@ class Footprint():
 
    
     def __init__( self, size ):
-        """description of class""" 
+        """Inicializa el mapa de huellas creando una matriz con ruido""" 
         
-        self.__footprint = numpy.zeros( ( size[0], size[1] ) )
+        self.__cols = size[0]
+        self.__rows = size[1]
+        # self.__footprint = numpy.random.randint( 0, 256, ( size[0], size[1] ) )
+        self.__footprint = numpy.zeros( ( size[0], size[1] ) )        
 
+
+    def set_footprint( self, position ):
+        """description of class""" 
+  
+        self.__footprint[ position[0] ][ position[1] ] += 256
+        
 
     def get_footprint( self, col, row ):
         """description of class""" 
-        try:            
-            return self.__footprint[ col ][ row ]           
-        except:
-            return -1
+
+        if( col < 0 or col > self.__cols-1 ) or \
+          ( row < 0 or row > self.__rows-1 ):
+
+            return 9216
+
+        return self.__footprint[ col ][ row ]           
 
         
-    def paint_box( self, position ):
-        """description of class""" 
-  
-        self.__footprint[ position[0] ][ position[1] ] += 32
-
-
-        
-    def plot_board( self, enabled, screen, with_food ):
+    def plot_board( self, enabled, pause, screen, with_food ):
         """description of class""" 
 
 
@@ -46,19 +51,22 @@ class Footprint():
                 
         for col in range ( cols ):
             for j in range ( rows ):
+
+                c = 64 
                 if( self.__footprint[col][j] > 1 ):
                     c = self.__footprint[col][j]
                     if c < 120:
                         c = 120
                     elif c>255:
                         c = 255
+                    
+                    if ( not pause ):
+                        self.__footprint[col][j] -= 1
 
-                    self.__footprint[col][j] -= .25
-
-                    if(with_food==0):
-                        pygame.draw.rect( footprint_surface,  ( 204,   0, 204, c-64 ), ( col*width_tile, j*height_tile, width_tile, height_tile ) )
-                    else:
-                        pygame.draw.rect( footprint_surface,  ( 102, 204, 204, c-64 ), ( col*width_tile, j*height_tile, width_tile, height_tile ) )
+                if(with_food==0):
+                    pygame.draw.rect( footprint_surface,  ( 204,   0, 204, c-64 ), ( col*width_tile, j*height_tile, width_tile, height_tile ) )
+                else:
+                    pygame.draw.rect( footprint_surface,  ( 102, 204, 204, c-64 ), ( col*width_tile, j*height_tile, width_tile, height_tile ) )
 
 
         screen.blit( footprint_surface, (0, 0) )
