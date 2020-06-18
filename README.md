@@ -31,7 +31,7 @@ Algunas veces peta cuando la hormiga se encalla.
 
 OBJETIVOS PARCIALES 
 
-- mejorar patron de buscar comida
+- mejorar patrón para buscar comida
 
 OBJETIVOS REALES
 
